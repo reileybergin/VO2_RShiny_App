@@ -87,17 +87,17 @@ tabPanel("Calculate Aerobic Training Zones",
       
              numericInput(inputId = "vo2max", 
                           label = h4(tags$strong("Enter your VO2max (ml/kg/min):")), 
-                          value = 52),
-        
-             br(),
-             h4(tags$strong("Your Maximal Aerobic Speed (MAS) is:"))
-             )
+                          value = 52)
+             ),
+           
+          # Ouputs
+          htmlOutput("MAStxt")
+           
             ),
          
          # Ouputs
          mainPanel(
-           DT::dataTableOutput(outputId = "speedtb"),
-           DT::dataTableOutput(outputId = "vo2tb")
+           DT::dataTableOutput(outputId = "MAStb")
            )
       )  
     )
@@ -129,16 +129,11 @@ server <- function(input, output) {
   })
   
 
-  # Speed Table (enter speed to calculate vO2)
-  speeddf <- reactive({
-    req(input$vo2per,input$speed)
-    data.frame("Speed(mph)" = c(input$speed),
-               "PercentVO2max" = c(round(((input$speed*linearmodel()$coefficients[2] + linearmodel()$coefficients[1])/input$vo2max),digits = 2)*100))
-    
-  })
+  # MAS value
   
+  output$MAStxt <- renderText({paste("Your Maximal Aerobic Speed is <b>", input$vo2max)})
   
-  # Vo2 Table (enter speed to calculate vO2)
+  # MAS Table 
   vo2maxdf <- reactive({
     req(input$vo2per,input$speed)
     data.frame("Speed(mph)" = c(round(((((input$vo2per/100)*input$vo2max) - linearmodel()$coefficients[1])/linearmodel()$coefficients[2]),digits = 1)),
@@ -147,36 +142,16 @@ server <- function(input, output) {
   })
   
 
-  # Create speed % data table
-  output$speedtb <- renderDataTable({
-    DT::datatable(data = speeddf(), 
-                  options = list(pageLength = 5, dom = 't'),
-                  selection = 'none',
-                  class = 'cell-border stripe',
-                  rownames = FALSE)
-    
-  })
-  
+
   # Create vo2 data table
-  output$vo2tb <- renderDataTable({
+  output$MAStb <- renderDataTable({
     DT::datatable(data = vo2maxdf(), 
                   options = list(pageLength = 5, dom = 't'),
                   class = 'cell-border stripe',
                   rownames = FALSE)
     
   })
-  
 
-  
-  # model output
-  #output$datatype <- renderPrint({
-    #VO2()
- # })
-  
-  #output$summary <- renderPrint({
-   # linearmodel()$coefficients[1]
-    #})
-  
 }
 
 
