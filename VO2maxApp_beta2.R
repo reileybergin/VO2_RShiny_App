@@ -162,21 +162,30 @@ server <- function(input, output) {
                              "Zone4",
                              "Zone5",
                              "Zone6"
-                             ),
-              "AerobicTraining" = c("Aerobic Recovery: <70% MAS", 
-                                    "Aerobic Threshold: 70-77%MAS", 
-                                    "Aerobic #2: 78-85%MAS",
-                                    "Anaerobic Threshold: 86-92%MAS", 
-                                    "Maximal Aerobic: 93-100%MAS",
-                                    "Supra-Maximal Aerobic: >100%MAS"
-                                    ),
+              ),
+              "AerobicTraining" = c("Aerobic Recovery", 
+                                    "Aerobic Threshold", 
+                                    "Aerobic #2",
+                                    "Anaerobic Threshold", 
+                                    "Maximal Aerobic",
+                                    "Supra-Maximal Aerobic"
+              ),
+              
+              "MAS" = c("<70% MAS", 
+                        "70-77%MAS", 
+                        "78-85%MAS",
+                        "86-92%MAS", 
+                        "93-100%MAS",
+                        ">100%MAS"
+              ),
+              
               "Speed LowerLimit" = c(NA,
                                          round(masval()*.70,1),
                                          round(masval()*.78,1),
                                          round(masval()*.86,1),
                                          round(masval()*.93,1),
                                          round(masval(),1)
-                                         ),
+              ),
                               
               "Speed UpperLimit" = c(round(masval()*.70,1), 
                                          round(masval()*.77,1),
