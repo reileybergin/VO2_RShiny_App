@@ -125,6 +125,7 @@ server <- function(input, output) {
   output$warmUPtb <- renderDataTable({
     DT::datatable(data = warmUPdf(), 
                   options = list(pageLength = 5, dom = 't'),
+                  #caption = 'Warm Up Values',
                   class = 'cell-border stripe',
                   rownames = TRUE)
   })
@@ -152,19 +153,23 @@ server <- function(input, output) {
     })
   
   
-  # MAS Table 
-  vo2maxdf <- reactive({
-    req(input$vo2per,input$speed)
-    data.frame("Speed(mph)" = c(round(((((input$vo2per/100)*input$vo2max) - linearmodel()$coefficients[1])/linearmodel()$coefficients[2]),digits = 1)),
-              "PercentVO2max" = c(input$vo2per))
+  # Build MAS dataframe
+  masdf <- reactive({
+    req(input$vo2max)
+    data.frame("Aerobic_Training_Zone" = c(
+              "Zone 2 Aerobic Threshold"),
+              "Percent_MAS" = c("70 - 77"),
+              "Speed_LowerLimit" = c(round(masval()*.70,1)),
+              "Speed_UpperLimit" = c(round(masval()*.77,1))
+              )
     
   })
   
 
 
-  # Create vo2 data table
+  # Ouput MAS data table
   output$MAStb <- renderDataTable({
-    DT::datatable(data = vo2maxdf(), 
+    DT::datatable(data = masdf(), 
                   options = list(pageLength = 5, dom = 't'),
                   class = 'cell-border stripe',
                   rownames = FALSE)
