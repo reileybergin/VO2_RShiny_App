@@ -135,6 +135,10 @@ server <- function(input, output) {
 
   # MAS value
   
+  masval <- reactive({round((input$vo2max - linearmodel()$coefficients[1])/linearmodel()$coefficients[2],digits = 2)
+    
+  })
+  
   # MAS text output
   output$MAStxt <- renderText({paste("<h4>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", input$vo2max,"mph")})
   
@@ -159,6 +163,7 @@ server <- function(input, output) {
   
   # model output
   output$mastest <- renderPrint({
+    masval()
    })
   
   output$summary <- renderPrint({
