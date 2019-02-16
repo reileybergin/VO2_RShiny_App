@@ -91,7 +91,6 @@ tabPanel("Enter Warmup",
       # Ouputs 
       mainPanel(
         
-        plotOutput(outputId = "scatterplot"), 
         DT::dataTableOutput(outputId = "warmUPtb")
         
         )
