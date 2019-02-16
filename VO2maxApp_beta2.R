@@ -240,9 +240,7 @@ server <- function(input, output) {
   speeddf <- reactive({
     req(input$vo2per,input$speed)
     data.frame("Speed(mph)" = c(input$speed),
-               "Percent.VO2max" = c(round(((input$speed*linearmodel()$coefficients[2] + linearmodel()$coefficients[1])/input$vo2max),digits = 2)*100), 
-               "Pace.min" = c(round((60/input$speed))),
-               "Pace.secs" = c(round(((60/input$speed) - round((60/input$speed)))*60))
+               "Percent.VO2max" = c(round(((input$speed*linearmodel()$coefficients[2] + linearmodel()$coefficients[1])/input$vo2max),digits = 2)*100)
                )
     
   })
@@ -251,9 +249,8 @@ server <- function(input, output) {
   # Vo2 Table (enter speed to calculate vO2)
   vo2maxdf <- reactive({
     req(input$vo2per,input$speed)
-    data.frame("Speed(mph)" = c(round(((((input$vo2per/100)*input$vo2max) - linearmodel()$coefficients[1])/linearmodel()$coefficients[2]),digits = 1)),
-               "Percent.VO2max" = c(input$vo2per),
-                "Pace.min.sec" = NA
+    data.frame("Percent.VO2max" = c(input$vo2per),
+      "Speed(mph)" = c(round(((((input$vo2per/100)*input$vo2max) - linearmodel()$coefficients[1])/linearmodel()$coefficients[2]),digits = 1))
     )
     
   })
