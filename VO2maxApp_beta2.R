@@ -86,8 +86,11 @@ tabPanel("Calculate Aerobic Training Zones",
            wellPanel(
       
              numericInput(inputId = "vo2max", 
-                          label = h5("Enter your VO2max (ml/kg/min):"), 
-                          value = 52)
+                          label = h4(tags$strong("Enter your VO2max (ml/kg/min):")), 
+                          value = 52),
+        
+             br(),
+             h4(tags$strong("Your Maximal Aerobic Speed (MAS) is:"))
              )
             ),
          
