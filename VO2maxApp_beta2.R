@@ -91,11 +91,7 @@ tabPanel("Calculate Aerobic Training Zones",
              # Ouputs
              htmlOutput("MAStxt")
              
-             ),
-           
-          #testing
-          verbatimTextOutput("mastest"), 
-          verbatimTextOutput("summary")
+             )
           
             ),
          
@@ -135,12 +131,12 @@ server <- function(input, output) {
 
   # MAS value
   
-  masval <- reactive({round((input$vo2max - linearmodel()$coefficients[1])/linearmodel()$coefficients[2],digits = 2)
+  masval <- reactive({round((input$vo2max - linearmodel()$coefficients[1])/linearmodel()$coefficients[2],digits = 1)
     
   })
   
   # MAS text output
-  output$MAStxt <- renderText({paste("<h4>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", input$vo2max,"mph")})
+  output$MAStxt <- renderText({paste("<h4>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", masval(),"mph")})
   
   # MAS Table 
   vo2maxdf <- reactive({
@@ -161,14 +157,6 @@ server <- function(input, output) {
     
   })
   
-  # model output
-  output$mastest <- renderPrint({
-    masval()
-   })
-  
-  output$summary <- renderPrint({
-   linearmodel()$coefficients[1]
-  })
 
 }
 
