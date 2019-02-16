@@ -86,7 +86,7 @@ tabPanel("Calculate Aerobic Training Zones",
            wellPanel(
       
              numericInput(inputId = "vo2max", 
-                          label = h4(tags$strong("Enter your VO2max (ml/kg/min):")), 
+                          label = h5(tags$strong("Enter your VO2max (ml/kg/min):")), 
                           value = 52),
              # Ouputs
              htmlOutput("MAStxt")
@@ -125,7 +125,7 @@ server <- function(input, output) {
   output$warmUPtb <- renderDataTable({
     DT::datatable(data = warmUPdf(), 
                   options = list(pageLength = 5, dom = 't'),
-                  #caption = 'Warm Up Values',
+                  caption = 'Warm Up Values',
                   class = 'cell-border stripe',
                   rownames = TRUE)
   })
@@ -142,7 +142,7 @@ server <- function(input, output) {
   })
   
   # MAS text output
-  output$MAStxt <- renderText({paste("<h4>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", masval(),"mph")})
+  output$MAStxt <- renderText({paste("<h5>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", masval(),"mph")})
   
   # MAS information text
   output$MASinfo <- renderText({paste("<h3> <font color=blue> Maximal Aerobic Speed (MAS) </h3> </font color=blue>
@@ -156,11 +156,35 @@ server <- function(input, output) {
   # Build MAS dataframe
   masdf <- reactive({
     req(input$vo2max)
-    data.frame("Aerobic_Training_Zone" = c(
-              "Zone 2 Aerobic Threshold"),
-              "Percent_MAS" = c("70 - 77"),
-              "Speed_LowerLimit" = c(round(masval()*.70,1)),
-              "Speed_UpperLimit" = c(round(masval()*.77,1))
+    data.frame(row.names = c("Zone1", 
+                             "Zone2", 
+                             "Zone3", 
+                             "Zone4",
+                             "Zone5",
+                             "Zone6"
+                             ),
+              "AerobicTraining" = c("Aerobic Recovery: <70% MAS", 
+                                    "Aerobic Threshold: 70-77%MAS", 
+                                    "Aerobic #2: 78-85%MAS",
+                                    "Anaerobic Threshold: 86-92%MAS", 
+                                    "Maximal Aerobic: 93-100%MAS",
+                                    "Supra-Maximal Aerobic: >100%MAS"
+                                    ),
+              "Speed LowerLimit" = c(NA,
+                                         round(masval()*.70,1),
+                                         round(masval()*.78,1),
+                                         round(masval()*.86,1),
+                                         round(masval()*.93,1),
+                                         round(masval(),1)
+                                         ),
+                              
+              "Speed UpperLimit" = c(round(masval()*.70,1), 
+                                         round(masval()*.77,1),
+                                         round(masval()*.85,1),
+                                         round(masval()*.92,1),
+                                         round(masval(),1),
+                                         NA
+                                         )
               )
     
   })
@@ -170,9 +194,9 @@ server <- function(input, output) {
   # Ouput MAS data table
   output$MAStb <- renderDataTable({
     DT::datatable(data = masdf(), 
-                  options = list(pageLength = 5, dom = 't'),
+                  options = list(pageLength = 6, dom = 't'),
                   class = 'cell-border stripe',
-                  rownames = FALSE)
+                  rownames = TRUE)
     
   })
   
