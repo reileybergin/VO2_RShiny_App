@@ -87,12 +87,11 @@ tabPanel("Calculate Aerobic Training Zones",
       
              numericInput(inputId = "vo2max", 
                           label = h4(tags$strong("Enter your VO2max (ml/kg/min):")), 
-                          value = 52)
-             ),
-           
-          # Ouputs
-          htmlOutput("MAStxt")
-           
+                          value = 52),
+             # Ouputs
+             htmlOutput("MAStxt")
+             
+             )
             ),
          
          # Ouputs
@@ -131,7 +130,7 @@ server <- function(input, output) {
 
   # MAS value
   
-  output$MAStxt <- renderText({paste("Your Maximal Aerobic Speed is <b>", input$vo2max)})
+  output$MAStxt <- renderText({paste("<h4>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", input$vo2max,"mph")})
   
   # MAS Table 
   vo2maxdf <- reactive({
