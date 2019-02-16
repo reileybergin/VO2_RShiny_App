@@ -91,7 +91,12 @@ tabPanel("Calculate Aerobic Training Zones",
              # Ouputs
              htmlOutput("MAStxt")
              
-             )
+             ),
+           
+          #testing
+          verbatimTextOutput("mastest"), 
+          verbatimTextOutput("summary")
+          
             ),
          
          # Ouputs
@@ -131,7 +136,6 @@ server <- function(input, output) {
   # MAS value
   
   # MAS text output
-  
   output$MAStxt <- renderText({paste("<h4>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", input$vo2max,"mph")})
   
   # MAS Table 
@@ -154,7 +158,7 @@ server <- function(input, output) {
   })
   
   # model output
-  output$data <- renderPrint({
+  output$mastest <- renderPrint({
    })
   
   output$summary <- renderPrint({
