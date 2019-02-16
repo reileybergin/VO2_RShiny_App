@@ -95,7 +95,13 @@ tabPanel("Calculate Aerobic Training Zones",
           
             ),
          
-         # Ouputs
+         # Mainpanel
+         htmlOutput("MASinfo"),
+         
+         # Text explaining what MAS is
+         
+         
+         #Outputs
          mainPanel(
            DT::dataTableOutput(outputId = "MAStb")
            )
@@ -130,13 +136,21 @@ server <- function(input, output) {
   
 
   # MAS value
-  
   masval <- reactive({round((input$vo2max - linearmodel()$coefficients[1])/linearmodel()$coefficients[2],digits = 1)
     
   })
   
   # MAS text output
   output$MAStxt <- renderText({paste("<h4>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", masval(),"mph")})
+  
+  # MAS information text
+  output$MASinfo <- renderText({paste("<h3> <font color=blue> Maximal Aerobic Speed (MAS) </h3> </font color=blue>
+                                      <br> Your MAS is the lowest running speed at which maximum oxygen uptake (VO2max) occurs. 
+                                      The amount of time you spend training at or above 100% MAS is a critical factor for improving aerobic power.
+                                      <br> <br> In the table below are training zones based on your MAS. These training zones are derived from <i> Baker et al Recent trends in high intensity aerobic training for field sports.")
+    
+    })
+  
   
   # MAS Table 
   vo2maxdf <- reactive({
