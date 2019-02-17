@@ -98,8 +98,6 @@ tabPanel("Calculate Aerobic Training Zones",
          # Mainpanel
          htmlOutput("MASinfo"),
          
-         # Text explaining what MAS is
-         
          
          #Outputs
          mainPanel(
@@ -113,7 +111,6 @@ tabPanel("Calculate VO2max Training Intensity",
          sidebarPanel(
            
            wellPanel(
-             h4("Enter training parameters"),
              
              numericInput(inputId = "vo2max", 
                           label = h5("Enter your VO2max (ml/kg/min):"), 
@@ -129,8 +126,9 @@ tabPanel("Calculate VO2max Training Intensity",
          
          # Ouputs
          mainPanel(
-           DT::dataTableOutput(outputId = "speedtb"),
-           DT::dataTableOutput(outputId = "vo2tb")
+           htmlOutput("Ifspeed"),
+           htmlOutput("If%Vo2max")
+
          )
       ) 
     )
@@ -236,15 +234,17 @@ server <- function(input, output) {
     
   })
   
-  # Speed Table (enter speed to calculate vO2)
-  speeddf <- reactive({
-    req(input$vo2per,input$speed)
-    data.frame("Speed(mph)" = c(input$speed),
-               "Percent.VO2max" = c(round(((input$speed*linearmodel()$coefficients[2] + linearmodel()$coefficients[1])/input$vo2max),digits = 2)*100)
-               )
+  # %Vo2max value
+  pervo2max <- reactive({
+    req(input$speed)
+    c(round(((input$speed*linearmodel()$coefficients[2] + linearmodel()$coefficients[1])/input$vo2max),digits = 2)*100)
     
   })
   
+  # MAS information text
+  output$Ifspeed <- renderText({paste("<h5> Running at", input$speed, "mph is equal to <b> <font color=blue>", pervo2max() ,"% of your 
+                                      VO2max")})
+    
   
   # Vo2 Table (enter speed to calculate vO2)
   vo2maxdf <- reactive({
@@ -254,27 +254,6 @@ server <- function(input, output) {
     )
     
   })
-  
-  
-  # Create speed % data table
-  output$speedtb <- renderDataTable({
-    DT::datatable(data = speeddf(), 
-                  options = list(pageLength = 5, dom = 't'),
-                  selection = 'none',
-                  class = 'cell-border stripe',
-                  rownames = FALSE)
-    
-  })
-  
-  # Create vo2 data table
-  output$vo2tb <- renderDataTable({
-    DT::datatable(data = vo2maxdf(), 
-                  options = list(pageLength = 5, dom = 't'),
-                  class = 'cell-border stripe',
-                  rownames = FALSE)
-    
-  })
-  
   
 }
 
