@@ -242,7 +242,7 @@ server <- function(input, output) {
   })
   
   # MAS information text
-  output$Ifspeed <- renderText({paste("<h5> Running at", input$speed, "mph is equal to <b> <font color=blue>", pervo2max() ,"% of your 
+  output$Ifspeed <- renderText({paste("<h4> Running at <b>", input$speed, "mph </b> is equal to <b> <font color=blue>", pervo2max() ,"% </b> </font color=blue> of your 
                                       VO2max")})
     
   
