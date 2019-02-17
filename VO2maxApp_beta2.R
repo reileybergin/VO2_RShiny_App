@@ -127,8 +127,8 @@ tabPanel("Calculate VO2max Training Intensity",
          # Ouputs
          mainPanel(
            htmlOutput("Ifspeed"),
-           htmlOutput("If%Vo2max")
-
+           htmlOutput("IfVo2max")
+           
          )
       ) 
     )
@@ -241,19 +241,22 @@ server <- function(input, output) {
     
   })
   
-  # MAS information text
-  output$Ifspeed <- renderText({paste("<h4> Running at <b>", input$speed, "mph </b> is equal to <b> <font color=blue>", pervo2max() ,"% </b> </font color=blue> of your 
+  # %Vo2max value information text
+  output$Ifspeed <- renderText({paste("<h4> Running at <b> <font color=green>", input$speed, "mph  </font color=green> </b> is equal to <b> <font color=blue>", pervo2max() ,"% </b> </font color=blue> of your 
                                       VO2max")})
+  
+  
     
   
   # Vo2 Table (enter speed to calculate vO2)
-  vo2maxdf <- reactive({
-    req(input$vo2per,input$speed)
-    data.frame("Percent.VO2max" = c(input$vo2per),
-      "Speed(mph)" = c(round(((((input$vo2per/100)*input$vo2max) - linearmodel()$coefficients[1])/linearmodel()$coefficients[2]),digits = 1))
-    )
-    
+  runspeed <- reactive({
+    req(input$vo2per)
+    c(round(((((input$vo2per/100)*input$vo2max) - linearmodel()$coefficients[1])/linearmodel()$coefficients[2]),digits = 1))
   })
+  
+  # %Vo2max value information text
+  output$IfVo2max <- renderText({paste("<h4><b> <font color=blue>", input$vo2per, "% </b> </font color=blue> of your VO2max is equal to <b> <font color=green>", runspeed() ,"mph </b> </font color=green>" 
+                                      )})
   
 }
 
