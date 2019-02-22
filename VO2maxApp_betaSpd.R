@@ -61,7 +61,48 @@ tabPanel("Enter Results",
           div(style = "display: inline-block;vertical-align:top; width: 150px;",
               numericInput(inputId = "v4", 
                            label = h5("VO2 (ml/kg/min):"), 
+                           value = "")),
+          
+          h4(tags$strong("Stage 5")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "s5", 
+                           label = h5("Speed (mph):"), 
+                           value = "")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "v5", 
+                           label = h5("VO2 (ml/kg/min):"), 
+                           value = "")),
+          
+          h4(tags$strong("Stage 6")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "s6", 
+                           label = h5("Speed (mph):"), 
+                           value = "")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "v6", 
+                           label = h5("VO2 (ml/kg/min):"), 
+                           value = "")), 
+          
+          h4(tags$strong("Stage 7")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "s7", 
+                           label = h5("Speed (mph):"), 
+                           value = "")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "v7", 
+                           label = h5("VO2 (ml/kg/min):"), 
+                           value = "")),
+          
+          h4(tags$strong("Stage 8")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "s8", 
+                           label = h5("Speed (mph):"), 
+                           value = "")),
+          div(style = "display: inline-block;vertical-align:top; width: 150px;",
+              numericInput(inputId = "v8", 
+                           label = h5("VO2 (ml/kg/min):"), 
                            value = ""))
+          
         ),
         
         # Built with Shiny by RStudio
@@ -142,14 +183,16 @@ server <- function(input, output) {
   # Create reactive data frame
   warmUPdf <- reactive({
     req(input$s1,input$v1) # ensure input$selected_var is available
-    data.frame(row.names = c("Stage 1","Stage 2", "Stage 3", "Stage 4"),"Speed mph" = c(input$s1,input$s2,input$s3,input$s4),"VO2 ml/kg/min" = c(input$v1,input$v2,input$v3,input$v4))
+    data.frame(row.names = c("Stage 1","Stage 2", "Stage 3", "Stage 4","Stage 5", "Stage 6","Stage 7", "Stage 8"),
+               "Speed mph" = c(input$s1,input$s2,input$s3,input$s4, input$s5, input$s6, input$s7, input$s8),
+               "VO2 ml/kg/min" = c(input$v1,input$v2,input$v3,input$v4, input$v5, input$v6, input$v7, input$v8))
     })
   
   
   # Create data table for warm up values
   output$warmUPtb <- renderDataTable({
     DT::datatable(data = warmUPdf(), 
-                  options = list(pageLength = 5, dom = 't'),
+                  options = list(pageLength = 8, dom = 't'),
                   #caption = 'Warm Up Values',
                   class = 'cell-border stripe',
                   rownames = TRUE)
