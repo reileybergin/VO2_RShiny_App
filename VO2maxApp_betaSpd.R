@@ -106,7 +106,6 @@ tabPanel("Enter Results",
         ),
         
         # Built with Shiny by RStudio
-        br(),
         h5("Created by Reiley.Bergin@gmail.com", style = "color:blue")
         
         ),
@@ -158,10 +157,10 @@ tabPanel("Calculate VO2max Training Intensity",
                           value = 52),
              sliderInput(inputId = "speed", 
                           label = h5(tags$strong("Enter Speed (mph):")), 
-                          min = 5.0, max = 15.0, value = 8.0),
+                          min = 2.0, max = 14.0, value = 8.0),
              sliderInput(inputId = "vo2per", 
                           label = h5(tags$strong("Enter %VO2max (ml/kg/min):")), 
-                         min = 50, max = 100, value = 85)
+                         min = 40, max = 120, value = 80)
            )
          ),
          
@@ -216,7 +215,7 @@ server <- function(input, output) {
   output$MASinfo <- renderText({paste("<h3> <font color=blue> Maximal Aerobic Speed (MAS) </h3> </font color=blue>
                                       <br> Your MAS is the lowest running speed at which maximum oxygen uptake (VO2max) occurs. 
                                       The amount of time you spend training at or above 100% MAS is a critical factor for improving aerobic power.
-                                      <br><br> In the table below are training zones based on your MAS.These training zones are derived from <i> Baker et al Recent trends in high intensity aerobic training for field sports.")
+                                      <br><br> In the table below are training zones based on your MAS. These training zones are derived from <i> Baker et al Recent trends in high intensity aerobic training for field sports.")
     
     })
   
