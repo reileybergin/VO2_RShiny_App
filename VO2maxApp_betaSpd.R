@@ -9,7 +9,7 @@ library(shinythemes)
 
 # Define UI for application
 ui <- fluidPage(
-  shinyUI(navbarPage("Aerobic Power Trainer",
+  shinyUI(navbarPage("VO2 Power Trainer",
                      theme = shinytheme("flatly"),
                    
 #tab 1 ----------------------------------------------------
@@ -154,14 +154,14 @@ tabPanel("Calculate VO2max Training Intensity",
            wellPanel(
              
              numericInput(inputId = "vo2max", 
-                          label = h5("Enter your VO2max (ml/kg/min):"), 
+                          label = h5(tags$strong("Enter your VO2max (ml/kg/min):")), 
                           value = 52),
-             numericInput(inputId = "speed", 
-                          label = h5("Enter Speed (mph):"), 
-                          value = 7.5),
-             numericInput(inputId = "vo2per", 
-                          label = h5("Enter %VO2max (ml/kg/min):"), 
-                          value = 80)
+             sliderInput(inputId = "speed", 
+                          label = h5(tags$strong("Enter Speed (mph):")), 
+                          min = 5.0, max = 15.0, value = 8.0),
+             sliderInput(inputId = "vo2per", 
+                          label = h5(tags$strong("Enter %VO2max (ml/kg/min):")), 
+                         min = 50, max = 100, value = 85)
            )
          ),
          
@@ -210,7 +210,7 @@ server <- function(input, output) {
   })
   
   # MAS text output
-  output$MAStxt <- renderText({paste("<h5>Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", masval(),"mph")})
+  output$MAStxt <- renderText({paste("<h5> <b> Your Maximal Aerobic Speed (MAS) is <b> <font color=blue>", masval(),"mph")})
   
   # MAS information text
   output$MASinfo <- renderText({paste("<h3> <font color=blue> Maximal Aerobic Speed (MAS) </h3> </font color=blue>
@@ -285,7 +285,7 @@ server <- function(input, output) {
   })
   
   # %Vo2max value information text
-  output$Ifspeed <- renderText({paste("<h4> Running at <b> <font color=purple>", input$speed, "mph  </font color=purple> </b> is equal to <b> <font color=blue>", pervo2max() ,"% </b> </font color=blue> of your 
+  output$Ifspeed <- renderText({paste("<h4> Running at <b> <font color=green>", input$speed, "mph  </font color=green> </b> is equal to <b> <font color=blue>", pervo2max() ,"% </b> </font color=blue> of your 
                                       VO2max")})
   
   
@@ -298,7 +298,7 @@ server <- function(input, output) {
   })
   
   # %Vo2max value information text
-  output$IfVo2max <- renderText({paste(" <br> <h4> Running at <b> <font color=blue>", input$vo2per, "% </b> </font color=blue> of your VO2max is equal to <b> <font color=purple>", runspeed() ,"mph </b> </font color=purple>" 
+  output$IfVo2max <- renderText({paste(" <br> <h4> Running at <b> <font color=blue>", input$vo2per, "% </b> </font color=blue> of your VO2max is equal to <b> <font color=green>", runspeed() ,"mph </b> </font color=green>" 
                                       )})
   
 }
